@@ -1,0 +1,294 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    background-color: #05090c; 
+    
+    /* Kombinasi Wallpaper Rubick dengan transparansi agar saraf canvas tembus pandang */
+    background-image: 
+        linear-gradient(to bottom, rgba(8, 13, 16, 0.88) 0%, rgba(8, 13, 16, 0.97) 100%),
+        
+        
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    margin: 0; padding: 20px; color: #c4d7ce; min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 950px; margin: 20px auto; background: rgba(13, 22, 26, 0.75); 
+    padding: 40px; border-radius: 16px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); 
+    border: 1px solid rgba(25, 230, 158, 0.2); backdrop-filter: blur(8px);
+}
+
+h1 { 
+    text-align: center; color: #19e69e; 
+    text-shadow: 0 0 20px rgba(25, 230, 158, 0.6), 0 0 40px rgba(25, 230, 158, 0.2); 
+    margin-bottom: 2px; font-weight: 800; letter-spacing: 4px; font-size: 24pt;
+}
+
+.subtitle { 
+    text-align: center; color: #e6c24a; font-size: 10pt; font-weight: 600;
+    text-transform: uppercase; margin-bottom: 40px; letter-spacing: 6px; opacity: 0.9;
+    text-shadow: 0 0 8px rgba(230, 194, 74, 0.3);
+}
+
+.section { 
+    background: rgba(8, 14, 16, 0.9); border: 1px solid rgba(35, 57, 47, 0.8); 
+    padding: 25px; border-radius: 12px; margin-bottom: 30px; 
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,0.5); 
+}
+
+.login-section {
+    background: #111a15; border: 1px solid #e6c24a; padding: 25px; border-radius: 12px; 
+    margin-bottom: 30px; box-shadow: 0 0 20px rgba(230, 194, 74, 0.15);
+    animation: fadeIn 0.4s ease-out;
+}
+
+h3 { margin-top: 0; margin-bottom: 20px; color: #a6d943; border-left: 4px solid #19e69e; padding-left: 12px; font-size: 13pt; letter-spacing: 0.5px; }
+label { font-size: 10pt; font-weight: 600; color: #8fa89b; display: block; margin-top: 12px; }
+
+input[type="text"], input[type="password"] { 
+    width: 100%; padding: 14px 16px; margin: 8px 0 16px 0; box-sizing: border-box; 
+    background-color: #05080a; border: 1px solid #1e3328; border-radius: 8px; 
+    color: #ffffff; font-size: 10.5pt; transition: all 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #19e69e; outline: none; box-shadow: 0 0 10px rgba(25, 230, 158, 0.25); background-color: #070c0f;
+}
+
+button, .btn { 
+    background: linear-gradient(135deg, #13b47b, #0a6b48); color: #ffffff; 
+    padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; 
+    text-decoration: none; display: inline-block; font-weight: 700; font-size: 10pt;
+    transition: all 0.25s ease; text-align: center; letter-spacing: 0.5px;
+}
+
+button:hover, .btn:hover { 
+    background: linear-gradient(135deg, #19e69e, #13b47b); 
+    box-shadow: 0 0 15px rgba(25, 230, 158, 0.5); transform: translateY(-1px);
+}
+
+.btn-delete { background: linear-gradient(135deg, #bd3a2f, #82221b); }
+.btn-delete:hover { background: linear-gradient(135deg, #e74c3c, #bd3a2f); box-shadow: 0 0 15px rgba(231, 76, 60, 0.4); }
+
+/* Struktur Tombol Utama Download*/
+.btn-download-ekg {
+    position: relative;
+    width: 160px;
+    height: 44px;
+    background: linear-gradient(135deg, #56b847, #3c5115);
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 10pt;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Mengatur posisi SVG agar presisi di area tombol */
+.ekg-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Mengatur tampilan Garis EKG */
+.ekg-border path {
+    fill: none;
+    stroke: #19e69e; /* Warna hijau neon khas Rubick */
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    
+    /* Trik menyembunyikan garis saat normal */
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+    
+    transition: stroke-dashoffset 0.5s ease, stroke 0.3s;
+    filter: drop-shadow(0 0 4px rgba(25, 230, 158, 0.9)); /* Efek glow menyala */
+}
+
+/* --- EFEK SAAT KURSOR MENDEKAT (HOVER) --- */
+.btn-download-ekg:hover {
+    background: linear-gradient(135deg, #8cb836, #53701d);
+    box-shadow: 0 0 20px rgba(25, 230, 158, 0.4);
+}
+
+/* Menggerakkan tinta laser mengikuti lekukan grafik EKG */
+.btn-download-ekg:hover .ekg-border path {
+    stroke: #a7db40; /* Berubah ke hijau Aghanim saat di-hover */
+    animation: ekgLaserFlow 1.2s linear infinite; 
+}
+
+/* Tulisan di dalam tombol */
+.btn-download-ekg span {
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
+/* --- MANTRANYA: MEMBUAT PULSA LAZER MENGALIR --- */
+@keyframes ekgLaserFlow {
+    0% {
+        stroke-dashoffset: 240;
+    }
+    100% {
+        stroke-dashoffset: -240;
+    }
+}
+
+.auth-bar { 
+    margin-bottom: 25px; font-size: 11px; padding-bottom: 12px; 
+    border-bottom: 1px solid rgba(45, 69, 56, 0.5); color: #718a7e; 
+}
+
+.login-toggle { color: #e6c24a; cursor: pointer; text-decoration: none; font-weight: 700; font-size: 12px; transition: all 0.3s; padding: 4px 10px; border: 1px dashed rgba(230, 194, 74, 0.4); border-radius: 4px; }
+.login-toggle:hover { color: #ffffff; background-color: rgba(230, 194, 74, 0.15); box-shadow: 0 0 8px rgba(230, 194, 74, 0.3); }
+
+table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 8px; overflow: hidden; }
+th, td { padding: 16px; text-align: left; border-bottom: 1px solid #14211a; vertical-align: middle; }
+th { background-color: #0e1a15; color: #19e69e; font-weight: 700; text-transform: uppercase; font-size: 8.5pt; letter-spacing: 1.5px; border-bottom: 2px solid #19e69e; }
+tr:hover { background-color: rgba(25, 230, 158, 0.03); }
+
+.progress-container {
+    width: 100%; background-color: #05080a; border-radius: 6px; margin-top: 10px; 
+    display: none; border: 1px solid #14241d; overflow: hidden; padding: 2px;
+}
+.progress-bar {
+    width: 0%; height: 8px; border-radius: 4px;
+    background: linear-gradient(90deg, #13b47b, #19e69e, #a7db40);
+    background-size: 200% 100%;
+    animation: shimmerEffect 1.5s infinite linear;
+    box-shadow: 0 0 10px rgba(25, 230, 158, 0.7); 
+    transition: width 0.08s linear;
+}
+.progress-text { font-size: 11px; color: #19e69e; display: block; margin-top: 6px; font-weight: 700; text-align: center; }
+
+@keyframes shimmerEffect {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Kontainer untuk menengahkan logo */
+.logo-container {
+    text-align: center;
+    margin-top: -20px;   /* Menarik logo sedikit ke atas agar lebih dekat dengan subtitle */
+    margin-bottom: 40px; /* Jarak aman sebelum masuk ke form/tabel bawah */
+}
+
+/* Pengaturan detail visual logo Rubick */
+.main-logo {
+    width: 120px;        /* Ukuran ideal, tidak terlalu mendominasi */
+    height: 120px;
+    border-radius: 50%;  /* Membuat gambar menjadi bulat sempurna */
+    border: 3px solid #19e69e; /* Bingkai hijau khas Rubick */
+    box-shadow: 0 0 25px rgba(25, 230, 158, 0.6), inset 0 0 15px rgba(25, 230, 158, 0.3);
+    object-fit: cover;
+    transition: all 0.5s ease;
+    animation: logoFloat 4s infinite ease-in-out; /* Efek melayang magis */
+}
+/* --- MANTRA TAMBAHAN KHUSUS UNTUK LAYAR HP --- */
+@media (max-width: 480px) {
+    .main-logo {
+        width: 80px;        /* Ukuran mengecil jadi 80px saat dibuka di HP */
+        height: 80px;
+        border: 2px solid #19e69e; /* Menipiskan border agar serasi */
+        box-shadow: 0 0 15px rgba(25, 230, 158, 0.5); /* Mengurangi radius pendaran sihir */
+    }
+    .logo-container {
+        margin-bottom: 25px; /* Mempersempit jarak bawah di HP agar menghemat ruang */
+    }
+}
+
+
+/* Efek hover saat mouse didekatkan ke logo */
+.main-logo:hover {
+    transform: scale(1.08);
+    border-color: #a7db40; /* Berubah ke warna hijau Aghanim saat di-hover */
+    box-shadow: 0 0 35px rgba(167, 219, 64, 0.8);
+}
+
+/* Animasi sihir melayang naik turun secara halus */
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 0 25px rgba(25, 230, 158, 0.5);
+    }
+    50% {
+        transform: translateY(-8px); /* Melayang ke atas 8px */
+        box-shadow: 0 0 35px rgba(25, 230, 158, 0.8); /* Sinar membesar */
+    }
+}
+
+/* ==================== GAYA VISUAL PAGINATION VAULT ==================== */
+.pagination-vault {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 8px;
+}
+
+.page-link {
+    color: #8fa89b;
+    padding: 10px 18px;
+    text-decoration: none;
+    background-color: #0e1a15;
+    border: 1px solid rgba(25, 230, 158, 0.15);
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 10pt;
+    transition: all 0.25s ease;
+}
+
+.page-link:hover {
+    color: #19e69e;
+    background-color: rgba(25, 230, 158, 0.08);
+    border-color: #19e69e;
+    box-shadow: 0 0 12px rgba(25, 230, 158, 0.25);
+    transform: translateY(-1px);
+}
+
+.page-link.active {
+    color: #05090c;
+    background: linear-gradient(135deg, #19e69e, #13b47b);
+    border-color: #19e69e;
+    box-shadow: 0 0 15px rgba(25, 230, 158, 0.45);
+    pointer-events: none; /* Menonaktifkan klik pada halaman aktif */
+}
+
+/* Penyesuaian Responsivitas Tabel & Paging di Layar HP */
+@media (max-width: 480px) {
+    th, td {
+        padding: 12px 8px; /* Memperkecil ruang padding tabel agar tidak meluber */
+        font-size: 9.5pt;
+    }
+    .btn-download-ekg {
+        width: 135px; /* Sedikit memperkecil tombol unduh di HP */
+        font-size: 9pt;
+    }
+    .page-link {
+        padding: 8px 14px; /* Memperkecil ukuran tombol halaman di HP */
+        font-size: 9pt;
+    }
+}
+
